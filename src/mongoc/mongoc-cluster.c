@@ -1091,6 +1091,10 @@ _mongoc_cluster_ismaster (mongoc_cluster_t      *cluster,
           BSON_ITER_HOLDS_UTF8(&iter)) {
          node->replSet = bson_iter_dup_utf8(&iter, NULL);
       }
+      if (bson_iter_init_find(&iter, &reply, "tags") &&
+          BSON_ITER_HOLDS_DOCUMENT(&iter)) {
+          bson_copy_to(&iter, node.tags);
+      }
    }
 
    ret = true;
