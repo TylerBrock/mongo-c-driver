@@ -55,7 +55,8 @@ test_write_concern_basic (void)
     */
    mongoc_write_concern_set_fsync(write_concern, true);
    mongoc_write_concern_set_journal(write_concern, true);
-   b = _mongoc_write_concern_freeze(write_concern);
+   b = _mongoc_write_concern_get_gle(write_concern);
+   ASSERT(bson_iter_init_find(&iter, b, "getlasterror") && BSON_ITER_HOLDS_INT32(&iter) && bson_iter_int32(&iter) == 1);
    ASSERT(bson_iter_init_find(&iter, b, "fsync") && BSON_ITER_HOLDS_BOOL(&iter) && bson_iter_bool(&iter));
    ASSERT(bson_iter_init_find(&iter, b, "j") && BSON_ITER_HOLDS_BOOL(&iter) && bson_iter_bool(&iter));
    ASSERT(bson_iter_init_find(&iter, b, "w") && BSON_ITER_HOLDS_INT32(&iter) && bson_iter_int32(&iter) == 3);

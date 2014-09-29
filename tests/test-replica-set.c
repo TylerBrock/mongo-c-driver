@@ -26,6 +26,7 @@ static void
 insert_test_docs (mongoc_collection_t *collection)
 {
    mongoc_write_concern_t *write_concern;
+   bson_t gle;
    bson_error_t error;
    bson_oid_t oid;
    bson_t b;
@@ -38,7 +39,7 @@ insert_test_docs (mongoc_collection_t *collection)
       const bson_t *wc;
       char *str;
 
-      wc = _mongoc_write_concern_freeze(write_concern);
+      wc = _mongoc_write_concern_get_gle(write_concern);
       str = bson_as_json(wc, NULL);
       fprintf(stderr, "Write Concern: %s\n", str);
       bson_free(str);
